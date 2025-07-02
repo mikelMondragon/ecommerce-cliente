@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import { ProductCardContainer } from './components/ProductCardContainer'
-// import { CreateProduct } from './components/CreateProduct'
+import { CreateProduct } from './components/CreateProduct'
 
 function App() {
   //aqui deberia de tener un estado?
@@ -9,8 +9,8 @@ function App() {
 
   return (
     <>
-      {/* <CreateProduct /> */}
-      <ProductCardContainer />
+      <CreateProduct />
+      {/* <ProductCardContainer /> */}
     </>
   )
 }

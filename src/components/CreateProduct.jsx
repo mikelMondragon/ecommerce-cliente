@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { apiFetch } from "../utils/apiFetch"
+import { ModelVisualizer } from './ModelVisualizer';
 // import { onSubmit } from "../hooks/useForm"
 export const CreateProduct = () => {
+    const [imagePreviews, setImagePreviews] = useState([]);
+    const [modelPreviews, setModelPrevies] = useState([])
+
     const onSubmitHandler = async (ev) => {
         ev.preventDefault();
         const formData = new FormData(ev.target);
@@ -23,6 +27,26 @@ export const CreateProduct = () => {
         }
 
     }
+
+    const onImageChangeHandler = (files) => {
+        const filesArray = Array.from(files);
+        const newImagePreviews = filesArray.map(element => ({
+            element,
+            url: URL.createObjectURL(element),
+        }));
+        console.log(newImagePreviews);
+        setImagePreviews(newImagePreviews);
+    }
+
+    const onModelsChangeHandler = (files) => {
+        const filesArray = Array.from(files);
+        const newModelPreviews = filesArray.map(element => ({
+            element,
+            url: URL.createObjectURL(element),
+        }));
+        setModelPrevies(newModelPreviews)
+    }
+
     return (
         <form encType="multipart/form-data" onSubmit={onSubmitHandler} noValidate>
             <label htmlFor="name">Product name: </label>
@@ -45,10 +69,28 @@ export const CreateProduct = () => {
             <input type="number" name="stock" placeholder="Stock" min="0" step="1" required />
 
             <p>Images:</p>
-            <input name="images" type='file' placeholder="Image URL 1" multiple accept="image/png, image/jpeg, image/jpg, image/gif" />
+            <div>
+                {imagePreviews.map((preview, idx) => (
+                    <img
+                        key={preview.ur}
+                        src={preview.url}
+                        alt={`preview-${idx}`}
+                        className="w-32 h-32 object-cover rounded border"
+                    />
+                ))}
+            </div>
+
+            <input name="images" type='file' placeholder="Image URL 1" multiple
+                onChange={(ev) => onImageChangeHandler(ev.target.files)}
+                accept="image/png, image/jpeg, image/jpg, image/gif" />
 
             <p>Models:</p>
-            <input type="file" name="models" multiple accept='.glb, .gltf' />
+            {modelPreviews.map((element) => (
+                <ModelVisualizer key={element.url} model={element} />
+            ))}
+
+            < input type="file" name="models" multiple accept='.glb, .gltf'
+                onChange={(ev) => onModelsChangeHandler(ev.target.files)} />
             <br />
             <button type="submit">Create Product</button>
         </form>
