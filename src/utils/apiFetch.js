@@ -11,7 +11,7 @@ export const apiFetch = (url, method = "GET", header = {}, body = {}) => {
 
     return fetch(url, options)
         .then(async res => {
-            if (res.ok) return res.json();
+            if (res.ok) return await res.json();
             throw await res.json();
         })
         .catch(err => {

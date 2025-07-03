@@ -6,6 +6,7 @@ import { apiFetch } from '../utils/apiFetch';
 export const ProductCardContainer = () => {
     const fullUrl = `${import.meta.env.VITE_SERVER_URL_BASE}/api/v1/products`;
     const { data, loading, error, setData } = useFetch(fullUrl);
+
     const onClickDeleteButtonHandler = async (id) => {
         try {
             const result = await apiFetch(`${import.meta.env.VITE_SERVER_URL_BASE}/api/v1/products/${id}`,
@@ -25,7 +26,7 @@ export const ProductCardContainer = () => {
     if (error) return <p>Error: {error}</p>;
     return (
         <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 bg-gray-50 min-h-screen">
-            ProductCardContainer
+
             {data.products?.map(product => (
                 <ProductCard key={product._id} product={product} onClickDeleteButtonHandler={onClickDeleteButtonHandler} />
             ))}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { apiFetch } from "../utils/apiFetch"; // Ajusta el path si es necesario
 
-export const useFetch = (endpoint) => {
+export const useFetch = (endpoint, method = "GET", header = {}, body = {}) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -10,11 +10,8 @@ export const useFetch = (endpoint) => {
         setError(null);
         setLoading(true);
         try {
-            const res = await fetch(endpoint);
-            const data = await res.json();
-
-            if (!res.ok) throw new Error(data.msg || 'Error loading products');
-
+            const data = await apiFetch(endpoint, method, header, body);
+            if (!data.ok) throw new Error(data.msg || 'Error loading products');
             setData(data);
         } catch (err) {
             setError(err.message);
@@ -25,7 +22,6 @@ export const useFetch = (endpoint) => {
 
     useEffect(() => {
         if (!endpoint) return;
-
         fetchData();
     }, [endpoint]);
 

@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { apiFetch } from "../utils/apiFetch"
 import { ModelVisualizer } from './ModelVisualizer';
 import { ConfiguratorVisualizer } from './ConfiguratorVisualizer';
+import { toast } from 'react-toastify';
 // import { onSubmit } from "../hooks/useForm"
 export const CreateProduct = () => {
     const [imagePreviews, setImagePreviews] = useState([]);
-    const [modelPreviews, setModelPrevies] = useState([]);
     const [slots, setSlots] = useState([
         { slot: "", files: [], previews: [] }
     ])
@@ -19,6 +19,7 @@ export const CreateProduct = () => {
             });
         });
         try {
+            //TODO: usar api fetch
             const result = await fetch("http://localhost:5000/api/v1/products", {
                 method: "POST",
                 body: formData
@@ -26,13 +27,22 @@ export const CreateProduct = () => {
             const data = await result.json();
             if (result.ok) {
                 console.log({ data })
+                //Reset the form
                 ev.target.reset()
+                setSlots([
+                    { slot: "", files: [], previews: [] }
+                ])
+                setImagePreviews([])
+                toast.success('Product created successfully');
+                // TODO: Draw message: Product created!
             } else {
                 throw data;
             }
 
         } catch (error) {
             console.log({ error })
+            toast.error('Error creating product');
+            //TODO: DRAW errors
         }
 
     }
@@ -46,15 +56,6 @@ export const CreateProduct = () => {
         console.log(newImagePreviews);
         setImagePreviews(newImagePreviews);
     }
-
-    // const onModelsChangeHandler = (files) => {
-    //     const filesArray = Array.from(files);
-    //     const newModelPreviews = filesArray.map(element => ({
-    //         element,
-    //         url: URL.createObjectURL(element),
-    //     }));
-    //     setModelPrevies(newModelPreviews)
-    // }
 
 
     const updateSlotName = (index, value) => {
@@ -119,9 +120,6 @@ export const CreateProduct = () => {
                 accept="image/png, image/jpeg, image/jpg, image/gif" />
 
 
-
-
-
             <p>Models:</p>
             {slots.map((slotData, i) => (
                 <div key={`slot${i}`}>
@@ -133,9 +131,9 @@ export const CreateProduct = () => {
                         value={slotData.slot}
                         onChange={(e) => updateSlotName(i, e.target.value)}
                     />
-                    {/* {slotData.previews?.map((preview) => (
+                    {slotData.previews?.map((preview) => (
                         <ModelVisualizer key={preview.url} model={preview} />
-                    ))} */}
+                    ))}
                     <br />
                     <input
                         type="file"
@@ -153,19 +151,14 @@ export const CreateProduct = () => {
             <br />
 
             <ConfiguratorVisualizer slots={slots} />
-            {/*  */}
-            {/* {modelPreviews.map((element) => (
-                <ModelVisualizer key={element.url} model={element} />
-            ))}
-
-            < input type="file" name="models" multiple accept='.glb, .gltf'
-                onChange={(ev) => onModelsChangeHandler(ev.target.files)} />
-            <br /> */}
 
 
 
 
             <button type="submit">Create Product</button>
+
+            {/* ERROR CONTAINER */}
+
         </form>
     );
 }
