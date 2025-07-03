@@ -1,12 +1,15 @@
 
-export const apiFetch = (url, method = "GET", header = {}, body = {}) => {
+export const apiFetch = (url, method = "GET", header = {}, body = null) => {
     const options = {
         method,
-        headers: { 'Content-Type': 'application/json', ...header },
+        headers: { ...header },
     };
 
-    if (method === "POST" || method === "PUT") {
+    if (body && !(body instanceof FormData)) {
+        options.headers['Content-Type'] = 'application/json';
         options.body = JSON.stringify(body);
+    } else if (body instanceof FormData) {
+        options.body = body;
     }
 
     return fetch(url, options)
