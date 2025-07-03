@@ -8,7 +8,7 @@ export const EditProduct = () => {
     const [initialData, setInitialData] = useState(null);
 
     useEffect(() => {
-        apiFetch(`/api/v1/products/${id}`, "PUT")
+        apiFetch(`/api/v1/products/${id}`)
             .then(data => setInitialData(data))
             .catch(err => console.error(err));
     }, [id]);
