@@ -47,14 +47,14 @@ export const CreateProduct = () => {
         setImagePreviews(newImagePreviews);
     }
 
-    const onModelsChangeHandler = (files) => {
-        const filesArray = Array.from(files);
-        const newModelPreviews = filesArray.map(element => ({
-            element,
-            url: URL.createObjectURL(element),
-        }));
-        setModelPrevies(newModelPreviews)
-    }
+    // const onModelsChangeHandler = (files) => {
+    //     const filesArray = Array.from(files);
+    //     const newModelPreviews = filesArray.map(element => ({
+    //         element,
+    //         url: URL.createObjectURL(element),
+    //     }));
+    //     setModelPrevies(newModelPreviews)
+    // }
 
 
     const updateSlotName = (index, value) => {
@@ -133,9 +133,9 @@ export const CreateProduct = () => {
                         value={slotData.slot}
                         onChange={(e) => updateSlotName(i, e.target.value)}
                     />
-                    {slotData.previews?.map((preview, i) => (
+                    {/* {slotData.previews?.map((preview) => (
                         <ModelVisualizer key={preview.url} model={preview} />
-                    ))}
+                    ))} */}
                     <br />
                     <input
                         type="file"
@@ -152,7 +152,7 @@ export const CreateProduct = () => {
             <button type="button" onClick={addNewSlot} >Add slot</button>
             <br />
 
-            {/* <ConfiguratorVisualizer slots={slots} /> */}
+            <ConfiguratorVisualizer slots={slots} />
             {/*  */}
             {/* {modelPreviews.map((element) => (
                 <ModelVisualizer key={element.url} model={element} />
