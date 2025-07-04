@@ -3,16 +3,18 @@ import { apiFetch } from "../utils/apiFetch";
 import { toast } from "react-toastify";
 
 export const useCreateProductForm = (urlBase, mode = "create") => {
+    const [slots, setSlots] = useState([{ slot: "", files: [], previews: [] }]);
     const [imagePreviews, setImagePreviews] = useState([]);
+    const [existingSlots, setExistingSlots] = useState([{ slot: "", files: [], previews: [] }]);
+    const [existingImagePreviews, setExistingImagePreviews] = useState([]);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [slots, setSlots] = useState([{ slot: "", files: [], previews: [] }]);
 
     const onImageChangeHandler = (files) => {
         imagePreviews.forEach((preview) => URL.revokeObjectURL(preview.url));
         const filesArray = Array.from(files);
         const newImagePreviews = filesArray.map((element) => ({
-            element,
+            //element,
             url: URL.createObjectURL(element),
         }));
         setImagePreviews(newImagePreviews);
@@ -62,10 +64,19 @@ export const useCreateProductForm = (urlBase, mode = "create") => {
         })
         );
 
-        setSlots(slotsFromData);
+        setExistingSlots(slotsFromData);
 
         // Images
-        setImagePreviews(initialData.images.map(url => ({ url: `${urlBase}/${url}` })))
+        setExistingImagePreviews(initialData.images.map(url => ({ url: `${urlBase}/${url}` })))
+    };
+
+    const removeExistingImage = (urlToRemove) => {
+        setExistingImagePreviews((prev) =>
+            prev.filter((img) => img.url !== urlToRemove)
+        );
+    };
+    const removeExistingSlot = (slotName) => {
+        setExistingSlots(existingSlots.filter((s) => s.slot !== slotName));
     };
 
     const onSubmitHandler = async (ev) => {
@@ -77,7 +88,7 @@ export const useCreateProductForm = (urlBase, mode = "create") => {
         slots
             .filter((s) => s.slot.trim() !== "")
             .forEach(({ slot, files }) => {
-                files.forEach((file) => {
+                files.forEach((file, i) => {
                     formData.append(`models[${slot}]`, file);
                 });
             });
@@ -102,6 +113,21 @@ export const useCreateProductForm = (urlBase, mode = "create") => {
                 setIsSubmitting(false);
             }
         } else if (mode === "edit") {
+            //append existing images urls
+            formData.append("existingImages", existingImagePreviews.map(element => (
+                element.url.replace(urlBase + "/", "")
+            )))
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+            //append existing models
+            console.log({ existingSlots })
+            console.log(existingSlots.map(element => ({
+                slot: element.slot,
+                files: element.files
+            })))
+            formData.append("existingModels", JSON.stringify(existingSlots.map(element => ({
+                slot: element.slot,
+                files: element.files
+            }))))
             try {
                 const data = await apiFetch(
                     `${urlBase}/api/v1/products/${formData.id}`,
@@ -126,6 +152,8 @@ export const useCreateProductForm = (urlBase, mode = "create") => {
     return {
         slots,
         imagePreviews,
+        existingSlots,
+        existingImagePreviews,
         formErrors,
         isSubmitting,
         onSubmitHandler,
@@ -133,6 +161,8 @@ export const useCreateProductForm = (urlBase, mode = "create") => {
         updateSlotName,
         updateSlotFiles,
         addNewSlot,
+        removeExistingSlot,
+        removeExistingImage,
         populateForm
     };
 };

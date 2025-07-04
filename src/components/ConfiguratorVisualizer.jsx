@@ -67,7 +67,7 @@ export const ConfiguratorVisualizer = ({ slots }) => {
             {/* Controles */}
             <div style={{ marginTop: '1rem' }}>
                 {slots.map((slot, i) => (
-                    <div key={`controls-${slot.slot}`} style={{ marginBottom: '0.5rem' }}>
+                    <div key={`controls-${slot.slot}${i}`} style={{ marginBottom: '0.5rem' }}>
                         <button type="button" onClick={() => handlePrev(slot.slot, slot.files.length)}>Prev</button>
                         <strong style={{ margin: '0 1rem' }}>{slot.slot}</strong>
                         <button type="button" onClick={() => handleNext(slot.slot, slot.files.length)}>Next</button>

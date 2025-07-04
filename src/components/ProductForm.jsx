@@ -8,12 +8,16 @@ export const ProductForm = ({ initialData = null }) => {
     const {
         slots,
         imagePreviews,
+        existingSlots,
+        existingImagePreviews,
         formErrors,
         isSubmitting,
         onSubmitHandler,
         onImageChangeHandler,
         updateSlotName,
         updateSlotFiles,
+        removeExistingSlot,
+        removeExistingImage,
         addNewSlot,
         populateForm
     } = useCreateProductForm(urlBase, initialData ? "edit" : "create");
@@ -21,7 +25,6 @@ export const ProductForm = ({ initialData = null }) => {
     const setInitialDataValues = () => {
         if (initialData) {
             populateForm(initialData);
-            // también seteamos los inputs no controlados
             if (formRef.current) {
                 formRef.current.name.value = initialData.name || "";
                 formRef.current.category.value = initialData.category || "";
@@ -38,7 +41,7 @@ export const ProductForm = ({ initialData = null }) => {
     return (
         <form ref={formRef} encType="multipart/form-data" onSubmit={onSubmitHandler} noValidate>
 
-            {initialData._id && <input type="hidden" name="id" value={initialData?._id} />}
+            {initialData?._id && <input type="hidden" name="id" value={initialData?._id} />}
             <label htmlFor="name">Product name: </label>
             <input name="name" placeholder="Product name" required />
             <br />
@@ -60,6 +63,23 @@ export const ProductForm = ({ initialData = null }) => {
 
             <p>Images:</p>
             <div>
+                <p>Old Images:</p>
+                {existingImagePreviews.map((preview, idx) => (
+                    <article key={"preview" + preview.url}>
+                        <img
+
+                            src={preview.url}
+                            alt={`preview-${idx}`}
+                            className="w-32 h-32 object-cover rounded border"
+                        />
+                        <button type="button" onClick={() => removeExistingImage(preview.url)}>
+                            Eliminar
+                        </button>
+                    </article>
+                ))}
+            </div>
+            <div>
+                <p>New Images:</p>
                 {imagePreviews.map((preview, idx) => (
                     <img
                         key={preview.url}
@@ -100,11 +120,21 @@ export const ProductForm = ({ initialData = null }) => {
                     <br />
                 </div>
             ))}
+            {existingSlots.map((slotData) => (
+                <div key={slotData.slot}>
+                    <p>{slotData.slot}</p>
+                    <button type="button" onClick={() => removeExistingSlot(slotData.slot)}>
+                        Eliminar
+                    </button>
+                </div>
+            ))}
+
+
 
             <button type="button" onClick={addNewSlot} >Add slot</button>
             <br />
 
-            <ConfiguratorVisualizer slots={slots} />
+            <ConfiguratorVisualizer slots={[...slots, ...existingSlots]} />
 
 
             <button type="submit" disabled={isSubmitting}>
