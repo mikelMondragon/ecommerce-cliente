@@ -2,25 +2,25 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { apiFetch } from '../utils/apiFetch';
 import { ProductForm } from './ProductForm';
+import { useFetch } from '../hooks/useFetch';
 
 export const EditProduct = () => {
     const { id } = useParams();
     const [initialData, setInitialData] = useState(null);
+    const urlBase = import.meta.env.VITE_SERVER_URL_BASE;
+    const { data, loading, error } = useFetch(`${urlBase}/api/v1/products/${id}`);
 
-    useEffect(() => {
-        apiFetch(`/api/v1/products/${id}`)
-            .then(data => setInitialData(data))
-            .catch(err => console.error(err));
-    }, [id]);
-
-    if (!initialData) return <p>Loading...</p>;
-
+    if (!data) return <p>Loading...</p>;
+    if (data) console.log(data)
     return (
-        <ProductForm
-            onSubmitApiEndpoint={`/api/v1/products/${id}`}
-            method="PUT"
-            initialData={initialData}
-            isEditing={true}
-        />
+        loading
+            ? <p>Cargando productos...</p>
+            : error
+                ? <p>Error: {error}</p>
+                : (
+                    <ProductForm
+                        initialData={data.product}
+                    />
+                )
     );
 };

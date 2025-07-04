@@ -5,11 +5,13 @@ export const apiFetch = (url, method = "GET", header = {}, body = null) => {
         headers: { ...header },
     };
 
-    if (body && !(body instanceof FormData)) {
-        options.headers['Content-Type'] = 'application/json';
-        options.body = JSON.stringify(body);
-    } else if (body instanceof FormData) {
-        options.body = body;
+    if (method === "POST" || method === "PUT") {
+        if (body && !(body instanceof FormData)) {
+            options.headers['Content-Type'] = 'application/json';
+            options.body = JSON.stringify(body);
+        } else if (body instanceof FormData) {
+            options.body = body;
+        }
     }
 
     return fetch(url, options)

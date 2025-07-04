@@ -2,7 +2,7 @@ import { useState } from "react";
 import { apiFetch } from "../utils/apiFetch";
 import { toast } from "react-toastify";
 
-export const useCreateProductForm = (urlBase) => {
+export const useCreateProductForm = (urlBase, mode = "create") => {
     const [imagePreviews, setImagePreviews] = useState([]);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,12 +49,32 @@ export const useCreateProductForm = (urlBase) => {
         setImagePreviews([]);
     };
 
+    const populateForm = (initialData) => {
+        if (!initialData) return;
+        console.log({ initialData })
+        // Slots
+        const slotsFromData = initialData.models.map((element) => ({
+            slot: element.slot,
+            files: element.files,
+            previews: element.files.filter(file => file != "").map(file => ({
+                url: `${urlBase}/${file.replace(/\\/g, '/')}`
+            }))
+        })
+        );
+
+        console.log({ slotsFromData })
+        setSlots(slotsFromData);
+
+        // Images
+        setImagePreviews(initialData.images.map(url => ({ url: `${urlBase}/${url}` })))
+    };
+
     const onSubmitHandler = async (ev) => {
         ev.preventDefault();
         setIsSubmitting(true);
         setFormErrors({});
-
         const formData = new FormData(ev.target);
+        console.log(formData)
         slots
             .filter((s) => s.slot.trim() !== "")
             .forEach(({ slot, files }) => {
@@ -62,27 +82,46 @@ export const useCreateProductForm = (urlBase) => {
                     formData.append(`models[${slot}]`, file);
                 });
             });
+        if (mode === "create") {
+            try {
+                const data = await apiFetch(
+                    `${urlBase}/api/v1/products`,
+                    "POST",
+                    {},
+                    formData
+                );
 
-        try {
-            const data = await apiFetch(
-                `${urlBase}/api/v1/products`,
-                "POST",
-                {},
-                formData
-            );
-
-            console.log({ data });
-            resetForm(ev.target);
-            toast.success("Product created successfully");
-        } catch (error) {
-            console.log(error);
-            if (error?.errors) {
-                setFormErrors(error.errors);
+                resetForm(ev.target);
+                toast.success("Product created successfully");
+            } catch (error) {
+                console.log(error);
+                if (error?.errors) {
+                    setFormErrors(error.errors);
+                }
+                toast.error("Error creating product");
+            } finally {
+                setIsSubmitting(false);
             }
-            toast.error("Error creating product");
-        } finally {
-            setIsSubmitting(false);
+        } else if (mode === "edit") {
+            try {
+                const data = await apiFetch(
+                    `${urlBase}/api/v1/products/${formData.id}`,
+                    "PUT",
+                    {},
+                    formData
+                )
+                toast.success("Product edited successfully");
+            } catch (error) {
+                console.log(error);
+                if (error?.errors) {
+                    setFormErrors(error.errors);
+                }
+                toast.error("Error editing product");
+            } finally {
+                setIsSubmitting(false);
+            }
         }
+
     };
 
     return {
@@ -95,5 +134,6 @@ export const useCreateProductForm = (urlBase) => {
         updateSlotName,
         updateSlotFiles,
         addNewSlot,
+        populateForm
     };
 };

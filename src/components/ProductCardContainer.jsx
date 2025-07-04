@@ -2,10 +2,14 @@ import React from 'react'
 import { ProductCard } from './ProductCard'
 import { useFetch } from '../hooks/useFetch';
 import { apiFetch } from '../utils/apiFetch';
+import { useNavigate } from "react-router-dom";
+
+
 
 export const ProductCardContainer = () => {
     const urlBase = import.meta.env.VITE_SERVER_URL_BASE;
     const fullUrl = `${urlBase}/api/v1/products`;
+    const navigate = useNavigate();
     const { data, loading, error, setData } = useFetch(fullUrl);
 
     const handleDelete = async (id) => {
@@ -24,7 +28,7 @@ export const ProductCardContainer = () => {
     }
 
     const handleCardClick = (id) => {
-        // navigate(/editProduct/${product._id}); 
+        navigate(`/product/${id}`);
         console.log("ID: ", id)
     }
 

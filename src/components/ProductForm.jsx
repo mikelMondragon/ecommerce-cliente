@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useCreateProductForm } from "../hooks/useProductForm";
 import { ConfiguratorVisualizer } from "./ConfiguratorVisualizer";
 
-export const ProductForm = (initialData) => {
+export const ProductForm = ({ initialData = null }) => {
+    const formRef = useRef(null)
     const urlBase = import.meta.env.VITE_SERVER_URL_BASE;
     const {
         slots,
@@ -14,10 +15,30 @@ export const ProductForm = (initialData) => {
         updateSlotName,
         updateSlotFiles,
         addNewSlot,
-    } = useCreateProductForm(urlBase);
+        populateForm
+    } = useCreateProductForm(urlBase, initialData ? "edit" : "create");
+
+    const setInitialDataValues = () => {
+        if (initialData) {
+            populateForm(initialData);
+            // también seteamos los inputs no controlados
+            if (formRef.current) {
+                formRef.current.name.value = initialData.name || "";
+                formRef.current.category.value = initialData.category || "";
+                formRef.current.description.value = initialData.description || "";
+                formRef.current.price.value = initialData.price || "";
+                formRef.current.stock.value = initialData.stock || "";
+            }
+        }
+    }
+    useEffect(() => {
+        setInitialDataValues();
+    }, [initialData]);
 
     return (
-        <form encType="multipart/form-data" onSubmit={onSubmitHandler} noValidate>
+        <form ref={formRef} encType="multipart/form-data" onSubmit={onSubmitHandler} noValidate>
+
+            {initialData._id && <input type="hidden" name="id" value={initialData?._id} />}
             <label htmlFor="name">Product name: </label>
             <input name="name" placeholder="Product name" required />
             <br />
@@ -86,10 +107,8 @@ export const ProductForm = (initialData) => {
             <ConfiguratorVisualizer slots={slots} />
 
 
-
-
             <button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Creating..." : "Create Product"}
+                {isSubmitting ? "Saving..." : "Save"}
             </button>
 
             <ul className="text-red-500 text-sm list-disc list-inside mt-4">
