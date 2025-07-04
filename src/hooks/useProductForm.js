@@ -51,7 +51,7 @@ export const useCreateProductForm = (urlBase, mode = "create") => {
 
     const populateForm = (initialData) => {
         if (!initialData) return;
-        console.log({ initialData })
+
         // Slots
         const slotsFromData = initialData.models.map((element) => ({
             slot: element.slot,
@@ -62,7 +62,6 @@ export const useCreateProductForm = (urlBase, mode = "create") => {
         })
         );
 
-        console.log({ slotsFromData })
         setSlots(slotsFromData);
 
         // Images
@@ -74,7 +73,7 @@ export const useCreateProductForm = (urlBase, mode = "create") => {
         setIsSubmitting(true);
         setFormErrors({});
         const formData = new FormData(ev.target);
-        console.log(formData)
+
         slots
             .filter((s) => s.slot.trim() !== "")
             .forEach(({ slot, files }) => {
