@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
-import { useCreateProductForm } from "../hooks/useProductForm";
-import { ConfiguratorVisualizer } from "./ConfiguratorVisualizer";
+import { useCreateProductForm } from "./hook/useProductForm";
+import { ConfiguratorVisualizer } from "./components/ConfiguratorVisualizer";
 
 export const ProductForm = ({ initialData = null }) => {
     const formRef = useRef(null)

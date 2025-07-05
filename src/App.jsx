@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import './App.css'
 import { Route, Routes, Navigate } from 'react-router-dom'
-import { ProductCardContainer } from './components/ProductCardContainer'
-import { CreateProduct } from './components/CreateProduct'
-import { EditProduct } from './components/EditProduct'
+import { ProductCardContainer } from './products/ProductCardContainer'
+import { CreateProduct } from './products/CreateProduct'
+import { EditProduct } from './products/EditProduct'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Register from './auth/Pages/Register'
+import MainLayout from './shared/MainLayout'
+import { Login } from './auth/Pages/Login'
+import AdminPanel from './admin/AdminPanel'
 
 function App() {
   //aqui deberia de tener un estado?
@@ -13,11 +17,17 @@ function App() {
 
   return (
     <>
+
       <Routes>
-        <Route path='/' element={<CreateProduct />} />
-        <Route path='products' element={<ProductCardContainer />} />
-        <Route path='product/:id' element={<EditProduct />} />
-        <Route path='/*' element={<Navigate to={'products'} />} />
+        <Route element={<MainLayout />} >
+          <Route path='/' element={<CreateProduct />} />
+          <Route path='products' element={<ProductCardContainer />} />
+          <Route path='product/:id' element={<EditProduct />} />
+          <Route path='/admin-dashboard' element={<AdminPanel />} />
+          <Route path='*' element={<Navigate to='/' />} />
+        </Route>
+        <Route path='register' element={<Register />} />
+        <Route path='login' element={<Login />} />
       </Routes>
       <ToastContainer
         position="top-right"

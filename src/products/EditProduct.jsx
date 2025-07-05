@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { apiFetch } from '../utils/apiFetch';
-import { ProductForm } from './ProductForm';
+import { ProductForm } from '../products/ProductForm';
 import { useFetch } from '../hooks/useFetch';
 
 export const EditProduct = () => {
