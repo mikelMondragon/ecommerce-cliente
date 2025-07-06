@@ -4,28 +4,32 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { apiFetch } from '../../utils/apiFetch';
 
 function Register() {
+    const urlBase = import.meta.env.VITE_SERVER_URL_BASE;
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [displayName, setDisplayName] = useState('');
+    const [userName, setUserName] = useState('');
     const navigate = useNavigate();
 
     const handleRegister = async () => {
         try {
+            if (!userName || typeof userName !== 'string' || userName.trim().length < 3) {
+                throw new Error("Invalid user name: must be a string with at least 3 characters");
+            }
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
+            const idToken = await user.getIdToken();
 
-            await setDoc(doc(db, 'users', user.uid), {
-                role: 'user',
-                email: user.email,
-                displayName,
-                createdAt: new Date().toISOString(),
-            });
+            const data = await apiFetch(`${urlBase}/auth/register`,
+                "POST", {}, { idToken, userName })
+
             toast.done("user registered")
             navigate("/");
         } catch (error) {
-            toast.error("Error in registry: " + error.message);
+
+            toast.error("Error in register " + error?.errors);
         }
     };
 
@@ -35,8 +39,8 @@ function Register() {
             <input
                 type="text"
                 placeholder="Nombre"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
             />
             <input
                 type="email"

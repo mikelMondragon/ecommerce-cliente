@@ -1,23 +1,25 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { auth, db } from '../../config/firebase.config';
+import { auth } from '../../config/firebase.config';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { apiFetch } from '../../utils/apiFetch';
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
+    const urlBase = import.meta.env.VITE_SERVER_URL_BASE;
     const [user, setUser] = useState(null);
-    const [role, setRole] = useState(null); // Guardar el rol del usuario
+    const [role, setRole] = useState(null);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            console.log("authchange", user)
             if (user) {
-                const userDoc = await getDoc(doc(db, 'users', user.uid));
-                if (userDoc.exists()) {
-                    setRole(userDoc.data().role); // Asignar rol desde Firestore
-                }
+                const idToken = await user.getIdToken();
+                const userInf = await apiFetch(`${urlBase}/auth/user`, "POST", {}, { idToken });
+                console.log(userInf.role)
+                setRole(userInf.role);
             }
-            setUser(user); // Guardar la información del usuario
+            setUser(user);
         });
         return () => unsubscribe();
     }, []);
