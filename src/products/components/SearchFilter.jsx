@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 
-export const SearchFilter = () => {
+export const SearchFilter = ({ onSearch }) => {
     const [search, setSearch] = useState('');
 
     const handleSearch = () => {
         if (!search.trim()) return;
-        console.log("🔍 Searching for:", search);
-        // Aquí podrías hacer algo como:
-        // navigate(`/products?name=${search}`);
-    };
-
-    const handleKeyDown = (e) => {
-        if (e.key === 'Enter') handleSearch();
+        onSearch(search);
     };
 
     return (
@@ -21,7 +15,7 @@ export const SearchFilter = () => {
                 placeholder="Search products..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                onKeyDown={handleKeyDown}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             />
             <button onClick={handleSearch}>Search</button>
         </div>
