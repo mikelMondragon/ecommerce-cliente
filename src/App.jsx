@@ -10,6 +10,8 @@ import Register from './auth/Pages/Register'
 import MainLayout from './shared/MainLayout'
 import { Login } from './auth/Pages/Login'
 import AdminPanel from './admin/AdminPanel'
+import ProductsAdminPanel from './admin/ProductsAdminPanel'
+import UsersAdminPanel from './admin/UsersAdminPanel'
 
 function App() {
   //aqui deberia de tener un estado?
@@ -20,10 +22,11 @@ function App() {
 
       <Routes>
         <Route element={<MainLayout />} >
-          <Route path='/' element={<CreateProduct />} />
-          <Route path='products' element={<ProductCardContainer />} />
-          <Route path='product/:id' element={<EditProduct />} />
           <Route path='/admin-dashboard' element={<AdminPanel />} />
+          <Route path='/admin/products' element={<ProductsAdminPanel />} />
+          <Route path='/admin/createProduct' element={<CreateProduct />} />
+          <Route path='product/:id' element={<EditProduct />} />
+          <Route path='/admin/users' element={<UsersAdminPanel />} />
           <Route path='*' element={<Navigate to='/' />} />
         </Route>
         <Route path='register' element={<Register />} />

@@ -16,7 +16,7 @@ export const Login = () => {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             const idToken = await user.getIdToken();
-            const data = await apiFetch(`${urlBase}/auth/user`, "POST", {}, { idToken });
+            const data = await apiFetch(`${urlBase}/auth/login`, "POST", {}, { idToken });
             console.log({ data })
             toast.done("Loged");
             navigate("/");
@@ -41,6 +41,16 @@ export const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
             />
             <button onClick={handleLogin}>Login</button>
+            <p>
+                Haven't you registered yet?{' '}
+                <span
+                    style={{ color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}
+                    onClick={() => navigate('/register')}
+                >
+                    Sign up here
+                </span>
+            </p>
+
         </div>
     );
 }

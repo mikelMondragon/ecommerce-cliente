@@ -55,6 +55,15 @@ function Register() {
                 onChange={(e) => setPassword(e.target.value)}
             />
             <button onClick={handleRegister}>Registry</button>
+            <p>
+                Are you already registered?{' '}
+                <span
+                    style={{ color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}
+                    onClick={() => navigate('/login')}
+                >
+                    Login here
+                </span>
+            </p>
         </div>
     );
 }

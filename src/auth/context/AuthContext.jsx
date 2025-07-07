@@ -12,11 +12,11 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            console.log("authchange", user)
             if (user) {
                 const idToken = await user.getIdToken();
-                const userInf = await apiFetch(`${urlBase}/auth/user`, "POST", {}, { idToken });
-                console.log(userInf.role)
+                const data = await apiFetch(`${urlBase}/auth/user`, "POST", {}, { idToken });
+                const userInf = data.user;
+
                 setRole(userInf.role);
             }
             setUser(user);
@@ -24,7 +24,14 @@ export function AuthProvider({ children }) {
         return () => unsubscribe();
     }, []);
 
-    const logout = () => signOut(auth);
+    const logout = async () => {
+        try {
+            const data = await apiFetch(`${urlBase}/auth/logout`);
+            signOut(auth);
+        } catch (error) {
+            console.log("logout error: ", error)
+        }
+    }
 
     return (
         <AuthContext.Provider value={{ user, role, logout }}>
