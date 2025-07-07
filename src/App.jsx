@@ -12,6 +12,7 @@ import { Login } from './auth/Pages/Login'
 import AdminPanel from './admin/AdminPanel'
 import ProductsAdminPanel from './admin/ProductsAdminPanel'
 import UsersAdminPanel from './admin/UsersAdminPanel'
+import HomePage from './pages/HomePage'
 
 function App() {
   //aqui deberia de tener un estado?
@@ -27,6 +28,7 @@ function App() {
           <Route path='/admin/createProduct' element={<CreateProduct />} />
           <Route path='product/:id' element={<EditProduct />} />
           <Route path='/admin/users' element={<UsersAdminPanel />} />
+          <Route path='/' element={<HomePage />} />
           <Route path='*' element={<Navigate to='/' />} />
         </Route>
         <Route path='register' element={<Register />} />

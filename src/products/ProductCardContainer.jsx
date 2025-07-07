@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 
 
 
-export const ProductCardContainer = () => {
+export const ProductCardContainer = ({ queries = "" }) => {
     const urlBase = import.meta.env.VITE_SERVER_URL_BASE;
-    const fullUrl = `${urlBase}/api/v1/products`;
+    const fullUrl = `${urlBase}/api/v1/products${queries}`;
     const navigate = useNavigate();
     const { data, loading, error, setData } = useFetch(fullUrl);
 
@@ -20,7 +20,6 @@ export const ProductCardContainer = () => {
             const newProducts = data.products.filter(element => element._id != id)
             const newData = { ...data, products: newProducts };
             setData(newData);
-
         } catch (error) {
             toast.error('Error getting products');
             console.log(error)
