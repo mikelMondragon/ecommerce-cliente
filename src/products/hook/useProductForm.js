@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { apiFetch } from "../utils/apiFetch";
+import { apiFetch } from "../../utils/apiFetch";
 import { toast } from "react-toastify";
 
 export const useCreateProductForm = (urlBase, mode = "create") => {
@@ -117,13 +117,6 @@ export const useCreateProductForm = (urlBase, mode = "create") => {
             formData.append("existingImages", existingImagePreviews.map(element => (
                 element.url.replace(urlBase + "/", "")
             )))
-            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-            //append existing models
-            console.log({ existingSlots })
-            console.log(existingSlots.map(element => ({
-                slot: element.slot,
-                files: element.files
-            })))
             formData.append("existingModels", JSON.stringify(existingSlots.map(element => ({
                 slot: element.slot,
                 files: element.files
