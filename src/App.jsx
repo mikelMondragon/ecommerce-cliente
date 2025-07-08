@@ -12,7 +12,7 @@ import { Login } from './auth/Pages/Login'
 import AdminPanel from './admin/AdminPanel'
 import ProductsAdminPanel from './admin/ProductsAdminPanel'
 import UsersAdminPanel from './admin/UsersAdminPanel'
-import HomePage from './pages/HomePage'
+import { HomePage } from './pages/HomePage'
 
 function App() {
   //aqui deberia de tener un estado?

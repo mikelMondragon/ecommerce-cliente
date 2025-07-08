@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
-import { SearchFilter } from '../products/components/SearchFilter'
-import { ProductCardContainer } from '../products/ProductCardContainer'
+import { ProductCardContainer } from '../products/ProductCardContainer';
+import ProductFilter from '../products/components/ProductFilter';
+import { CatalogProductCard } from '../products/CatalogProductCard';
+import { useFetch } from '../hooks/useFetch';
 
-const HomePage = () => {
-    const [queryString, setQueryString] = useState('');
+
+export const HomePage = () => {
+
+    const [query, setQuery] = useState('');
+    const urlBase = import.meta.env.VITE_SERVER_URL_BASE;
+    const fullUrl = `${urlBase}/api/v1/products${query}`;
+    const { data, loading, error, setData } = useFetch(fullUrl);
+
     return (
         <div>
             <h1>Home page</h1>
-            <SearchFilter onSearch={(query) => setQueryString(`?name=${query}`)} />
-            <ProductCardContainer queries={queryString} />
+            <ProductFilter queryMinPrice={data?.priceRange?.min} queryMaxPrice={data?.priceRange?.max} onChange={(queryString) => setQuery(queryString)} />
+            <ProductCardContainer Card={CatalogProductCard} data={data} error={error} setData={setData} />
+            {/* Pagination */}
         </div>
-    )
-}
-
-export default HomePage
+    );
+};

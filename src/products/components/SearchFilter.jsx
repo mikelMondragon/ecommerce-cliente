@@ -4,7 +4,7 @@ export const SearchFilter = ({ onSearch }) => {
     const [search, setSearch] = useState('');
 
     const handleSearch = () => {
-        if (!search.trim()) return;
+
         onSearch(search);
     };
 
