@@ -1,11 +1,18 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
-export const ProductCard = ({ product, onClick, onDelete }) => {
+export const ProductCard = ({ product, onDelete }) => {
     const imageUrl = product.images?.[0];
+    const navigate = useNavigate();
+
+    const handleCardClick = () => {
+        navigate(`/product/${product._id}`);
+        console.log("ID: ", id)
+    }
 
     return (
         <article
-            onClick={() => onClick(product._id)}
+            onClick={() => handleCardClick()}
             className="bg-white shadow-md rounded-md p-4 flex flex-col items-center max-w-xs mx-auto"
         >
             <h4 className="text-lg font-semibold mb-3 text-center text-black">{product.name}</h4>
