@@ -1,13 +1,19 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useCart } from "../cart/context/CartContext"
 
 export const CatalogProductCard = ({ product, onClick, onCart }) => {
+    const { addItem } = useCart();
     const imageUrl = product.images?.[0];
     const navigate = useNavigate();
+
 
     const handleCardClick = () => {
         navigate(`/${product._id}`);
         console.log("ID: ", id)
+    }
+    const handleCartClick = () => {
+        addItem(product._id, 1, product);
     }
 
     return (
@@ -26,7 +32,8 @@ export const CatalogProductCard = ({ product, onClick, onCart }) => {
             <button
                 onClick={(e) => {
                     e.stopPropagation();
-                    onCart(product._id);
+                    //onCart(product._id);
+                    handleCartClick();
                 }}
             >
                 Add to cart
