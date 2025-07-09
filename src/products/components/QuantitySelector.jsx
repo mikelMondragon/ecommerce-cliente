@@ -3,6 +3,7 @@ import React from 'react';
 export const QuantitySelector = ({ value, onChange, min = 1, max = 99 }) => {
     const handleDecrease = () => {
         if (value > min) onChange(value - 1);
+        //if value 0 delete from cart
     };
 
     const handleIncrease = () => {
