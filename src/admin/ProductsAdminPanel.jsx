@@ -19,7 +19,12 @@ const ProductsAdminPanel = () => {
             <h1>Porducts admin panel</h1>
             <button onClick={() => naviate("/admin/createProduct")}>Create new product</button>
             <ProductFilter onChange={(queryString) => setQuery(queryString)} />
-            <ProductCardContainer Card={ProductCard} data={data} error={error} setData={setData} />
+            <ProductCardContainer
+                Card={ProductCard}
+                products={data?.products || []}
+                error={error}
+                setProducts={(newProducts) => setData({ ...data, products: newProducts })}
+            />
             {/* Pagination */}
         </div>
     );
