@@ -6,43 +6,39 @@ import { useNavigate } from "react-router-dom";
 
 
 
-export const ProductCardContainer = ({ Card, queries = "", data, loading, error, setData }) => {
-
+export const ProductCardContainer = ({ Card, products = [], loading, error, setProducts, origin = "main" }) => {
     const urlBase = import.meta.env.VITE_SERVER_URL_BASE;
     const navigate = useNavigate();
-    console.log("conatiner data: ", data)
+    console.log({ products })
     const handleDelete = async (id) => {
         try {
-            const result = await apiFetch(`${urlBase}/api/v1/products/${id}`,
-                "DELETE"
-            )
-            const newProducts = data.products.filter(element => element._id != id)
-            const newData = { ...data, products: newProducts };
-            setData(newData);
+            await apiFetch(`${urlBase}/api/v1/products/${id}`, "DELETE");
+            const newProducts = products.filter(p => p._id !== id);
+            setProducts(newProducts);
         } catch (error) {
-            toast.error('Error getting products');
-            console.log(error)
+            toast.error('Error deleting product');
+            console.log(error);
         }
-    }
-
-    const handleCart = (id) => {
-
-    }
+    };
 
     const handleCardClick = (id) => {
         navigate(`/product/${id}`);
-        console.log("ID: ", id)
-    }
+    };
 
-    return ( //Loading da un efecto extraño
-        error
-            ? <p>Error: {error}</p>
-            : (
-                <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 bg-gray-50 min-h-screen">
-                    {data?.products?.map(product => (
-                        <Card key={product._id} product={product} onCart={handleCart} onDelete={handleDelete} onClick={handleCardClick} />
-                    ))}
-                </section>
-            )
-    )
-}
+    return error ? (
+        <p>Error: {error}</p>
+    ) : (
+        <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 bg-gray-50 min-h-screen">
+            {products.map(product => (
+                <Card
+                    key={`${origin}-${product._id}`}
+                    product={product}
+                    onCart={() => { }} // implement later if needed
+                    onDelete={handleDelete}
+                    onClick={handleCardClick}
+                />
+            ))}
+        </section>
+    );
+};
+
