@@ -11,6 +11,7 @@ export const useFetch = (endpoint, method = "GET", header = {}, body = {}) => {
         setLoading(true);
         try {
             const data = await apiFetch(endpoint, method, header, body);
+            console.log({ data })
             if (!data.ok) throw new Error(data.msg || 'Error loading data');
             setData(data);
         } catch (err) {
