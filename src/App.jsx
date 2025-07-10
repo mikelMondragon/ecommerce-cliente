@@ -14,10 +14,17 @@ import ProductsAdminPanel from './admin/ProductsAdminPanel'
 import UsersAdminPanel from './admin/UsersAdminPanel'
 import { HomePage } from './pages/HomePage'
 import ProductPage from './pages/ProductPage'
+import { CheckoutPage } from './pages/CheckoutPage'
 
 function App() {
   //aqui deberia de tener un estado?
+  function Success() {
+    return <h2>¡Pago exitoso! Gracias por tu compra.</h2>;
+  }
 
+  function Cancel() {
+    return <h2>Pago cancelado. Puedes volver a intentarlo.</h2>;
+  }
 
   return (
     <>
@@ -27,8 +34,11 @@ function App() {
           <Route path='/admin-dashboard' element={<AdminPanel />} />
           <Route path='/admin/products' element={<ProductsAdminPanel />} />
           <Route path='/admin/createProduct' element={<CreateProduct />} />
-          <Route path='product/:id' element={<EditProduct />} />
           <Route path='/admin/users' element={<UsersAdminPanel />} />
+          <Route path='product/:id' element={<EditProduct />} />
+          <Route path='/checkout' element={<CheckoutPage />} />
+          <Route path='/success' element={<Success />} />
+          <Route path='/cancel' element={<Cancel />} />
           <Route path='/' element={<HomePage />} />
           <Route path='/:id' element={<ProductPage />} />
           <Route path='*' element={<Navigate to='/' />} />
