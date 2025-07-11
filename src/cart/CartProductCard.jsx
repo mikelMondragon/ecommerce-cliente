@@ -4,8 +4,8 @@ import { useCart } from './context/CartContext';
 
 export const CartProductCard = ({ product }) => {
     const imageUrl = product?.images?.[0];
-    const [ammount, setAmmount] = useState(1);
-    const { addItem, removeItem } = useCart()
+    const { addItem, removeItem, getItemAmmount } = useCart()
+    const [ammount, setAmmount] = useState(getItemAmmount(product._id));//obtener la cantidad q hay en el carrito
 
     const onAmmountChange = (newAmmount) => {
         if (newAmmount > 0) {
@@ -16,7 +16,6 @@ export const CartProductCard = ({ product }) => {
         else {
             removeItem(product._id)
         }
-
     }
 
     return (

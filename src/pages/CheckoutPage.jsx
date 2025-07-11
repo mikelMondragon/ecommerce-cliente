@@ -8,7 +8,7 @@ export const CheckoutPage = () => {
     const { cart } = useCart();
     console.log({ cart })
 
-    const products = cart.map(element => ({
+    const products = cart?.map(element => ({
         ...element.productData,
         quantity: element.quantity
     }))
@@ -33,7 +33,7 @@ export const CheckoutPage = () => {
     return (
         <div className="p-4 space-y-4">
             <h2 className="text-2xl font-semibold">Your Cart</h2>
-            {cart.length > 0 ? (
+            {cart?.length > 0 ? (
                 <>
                     <ProductCardContainer Card={CartProductCard} products={products} />
                     <button onClick={handleCheckout}>Checkout</button>

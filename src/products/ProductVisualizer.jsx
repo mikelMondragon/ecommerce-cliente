@@ -7,7 +7,7 @@ import { QuantitySelector } from './components/QuantitySelector';
 const ProductVisualizer = ({ product }) => {
     const urlBase = import.meta.env.VITE_SERVER_URL_BASE;
     const [ammount, setAmmount] = useState(1);
-    const slots = product.models.map((element) => ({
+    const slots = product?.models?.map((element) => ({
         slot: element.slot,
         files: element.files,
         previews: element.files.filter(file => file != "").map(file => ({
