@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 export const CategoryFilter = ({ onCategorySelect }) => {
     const [selected, setSelected] = useState(null);
@@ -7,23 +7,23 @@ export const CategoryFilter = ({ onCategorySelect }) => {
     const handleClick = (category) => {
         if (selected === category) {
             setSelected(null);
-            onCategorySelect(""); // 🔄 Deselect: remove filter
+            onCategorySelect('');
         } else {
             setSelected(category);
-            onCategorySelect(category); // ✅ Select category
+            onCategorySelect(category);
         }
     };
 
     return (
-        <div>
+        <div className="flex flex-wrap gap-2">
             {categories.map((cat) => (
                 <button
                     key={cat}
                     onClick={() => handleClick(cat)}
-                    style={{
-                        backgroundColor: selected === cat ? 'lightblue' : 'blue',
-                        marginRight: '10px'
-                    }}
+                    className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 ${selected === cat
+                            ? 'bg-blue-600 text-white border-blue-600'
+                            : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-100'
+                        }`}
                 >
                     {cat}
                 </button>
@@ -32,4 +32,4 @@ export const CategoryFilter = ({ onCategorySelect }) => {
     );
 };
 
-export default CategoryFilter
+export default CategoryFilter;

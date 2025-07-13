@@ -2,7 +2,6 @@ import { useState } from 'react'
 import './App.css'
 import 'react-toastify/dist/ReactToastify.css';
 import { Route, Routes, Navigate } from 'react-router-dom'
-import { EditProduct } from './products/EditProduct'
 import { ToastContainer } from 'react-toastify';
 
 import MainLayout from './shared/MainLayout'

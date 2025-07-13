@@ -6,7 +6,7 @@ import { PriceFilter } from './PriceFilter';
 
 const ProductFilter = ({ onChange, queryMinPrice, queryMaxPrice }) => {
     const [filters, setFilters] = useState({
-        inStock: 'true', // Checked by default
+        inStock: 'true',
         minPrice: queryMinPrice,
         maxPrice: queryMaxPrice
     });
@@ -27,7 +27,6 @@ const ProductFilter = ({ onChange, queryMinPrice, queryMaxPrice }) => {
         return params.toString() ? `?${params.toString()}` : '';
     };
 
-    // Notify parent of query change
     useEffect(() => {
         if (onChange) onChange(buildQueryString(filters));
     }, [filters, onChange]);
@@ -59,13 +58,15 @@ const ProductFilter = ({ onChange, queryMinPrice, queryMaxPrice }) => {
     };
 
     return (
-        <div className="p-4 bg-black rounded-xl shadow space-y-4">
-            <h2 className="text-xl font-semibold">Filters</h2>
+        <div className="flex justify-center items-center w-full"> {/* 🔄 centrado horizontal (y vertical si se quiere) */}
+            <div className="p-6 bg-white/5 rounded-2xl shadow-lg backdrop-blur-sm border border-white/10 space-y-6 w-full max-w-md text-center">
+                <h2 className="text-xl font-bold text-white tracking-wide">Filters</h2>
 
-            <AvailableFilter onChange={handleAvailableChange} defaultChecked />
-            <SearchFilter onSearch={handleSearch} />
-            <PriceFilter min={queryMinPrice} max={queryMaxPrice} onChange={handlePriceChange} />
-            <CategoryFilter onCategorySelect={handleCategoryClick} selectedCategory={filters.category} />
+                <SearchFilter onSearch={handleSearch} />
+                <AvailableFilter onChange={handleAvailableChange} defaultChecked />
+                <PriceFilter min={queryMinPrice} max={queryMaxPrice} onChange={handlePriceChange} />
+                <CategoryFilter onCategorySelect={handleCategoryClick} selectedCategory={filters.category} />
+            </div>
         </div>
     );
 };

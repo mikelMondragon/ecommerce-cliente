@@ -3,6 +3,9 @@ import { ProductCardContainer } from '../products/ProductCardContainer';
 import ProductFilter from '../products/components/ProductFilter';
 import { CatalogProductCard } from '../products/CatalogProductCard';
 import { useFetch } from '../hooks/useFetch';
+import { Hero } from '../shared/Hero';
+import { ShippingInfo } from '../shared/ShippingInfo';
+import { CategoriesBanners } from '../shared/CategoriesBanners';
 
 
 export const HomePage = () => {
@@ -14,15 +17,16 @@ export const HomePage = () => {
 
     return (
         <div>
-            <h1>Home page</h1>
             <ProductFilter queryMinPrice={data?.priceRange?.min} queryMaxPrice={data?.priceRange?.max} onChange={(queryString) => setQuery(queryString)} />
+            <Hero />
             <ProductCardContainer
                 Card={CatalogProductCard}
                 products={data?.products || []}
                 error={error}
                 setProducts={(newProducts) => setData({ ...data, products: newProducts })}
             />
-
+            <CategoriesBanners />
+            <ShippingInfo />
             {/* Pagination */}
         </div>
     );
