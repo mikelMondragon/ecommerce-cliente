@@ -4,8 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Route, Routes, Navigate } from 'react-router-dom'
 import { EditProduct } from './products/EditProduct'
 import { ToastContainer } from 'react-toastify';
-import Register from './auth/Pages/Register'
-import { Login } from './auth/Pages/Login'
+
 import MainLayout from './shared/MainLayout'
 import { HomePage } from './pages/HomePage'
 import ProductPage from './pages/ProductPage'
@@ -14,6 +13,8 @@ import { CheckoutSuccess } from './pages/CheckoutSuccess'
 import { CheckoutError } from './pages/CheckoutError'
 
 import { adminRoutes, authRoutes } from './routes'
+
+
 
 function App() {
 
@@ -32,12 +33,11 @@ function App() {
       <Routes>
         <Route element={<MainLayout />} >
           {renderRoutes(adminRoutes)}
-          <Route path='product/:id' element={<EditProduct />} />
+          <Route path='product/:id' element={<ProductPage />} />
           <Route path='/checkout' element={<CheckoutPage />} />
           <Route path='/success' element={<CheckoutSuccess />} />
           <Route path='/cancel' element={<CheckoutError />} />
           <Route path='/' element={<HomePage />} />
-          <Route path='/:id' element={<ProductPage />} />
           <Route path='*' element={<Navigate to='/' />} />
         </Route>
         {renderRoutes(authRoutes)}

@@ -33,7 +33,7 @@ export const CheckoutPage = () => {
             <h2 className="text-2xl font-semibold">Your Cart</h2>
             {cart?.length > 0 ? (
                 <>
-                    <ProductCardContainer Card={CartProductCard} products={products} />
+                    <ProductCardContainer Card={CartProductCard} products={products} origin='cart' />
                     {/* aqui va la localizacion, un compoente pa esto? posiblemente */}
                     <button onClick={handleCheckout}>Checkout</button>
                 </>

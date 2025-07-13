@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { auth, db } from '../../config/firebase.config';
+import { auth } from '../../config/firebase.config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { setDoc, doc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { apiFetch } from '../../utils/apiFetch';
@@ -13,57 +12,83 @@ function Register() {
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
 
-    const handleRegister = async () => {
+    const handleRegister = async (e) => {
+        e.preventDefault();
         try {
             if (!userName || typeof userName !== 'string' || userName.trim().length < 3) {
                 throw new Error("Invalid user name: must be a string with at least 3 characters");
             }
+
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             const idToken = await user.getIdToken();
 
-            const data = await apiFetch(`${urlBase}/auth/register`,
-                "POST", {}, { idToken, userName })
+            const data = await apiFetch(`${urlBase}/auth/register`, "POST", {}, { idToken, userName });
 
-            toast.done("user registered")
+            toast.done("User registered");
             navigate("/");
         } catch (error) {
-
-            toast.error("Error in register " + error?.errors);
+            toast.error("Error in register: " + error.message);
         }
     };
 
     return (
-        <div>
-            <h2>Register</h2>
-            <input
-                type="text"
-                placeholder="Nombre"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-            />
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-                type="password"
-                placeholder="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button onClick={handleRegister}>Registry</button>
-            <p>
-                Are you already registered?{' '}
-                <span
-                    style={{ color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}
-                    onClick={() => navigate('/login')}
-                >
-                    Login here
-                </span>
-            </p>
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+            <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Register</h2>
+
+                <form className="space-y-4" onSubmit={handleRegister}>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                        <input
+                            type="text"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                            placeholder="Your username"
+                            value={userName}
+                            onChange={(e) => setUserName(e.target.value)}
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input
+                            type="email"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                            placeholder="your@email.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input
+                            type="password"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg transition-colors"
+                    >
+                        Register
+                    </button>
+                </form>
+
+                <div className="mt-6 text-center text-sm text-gray-600">
+                    Already have an account?{' '}
+                    <span
+                        onClick={() => navigate('/login')}
+                        className="text-indigo-600 hover:text-indigo-500 font-medium cursor-pointer"
+                    >
+                        Login
+                    </span>
+                </div>
+            </div>
         </div>
     );
 }

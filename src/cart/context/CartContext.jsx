@@ -66,8 +66,10 @@ export const CartProvider = ({ children }) => {
     };
 
     const getItemAmmount = (productId) => {
-        //obtner la cantidad que hay de cierto objeto
-        return state.items.find(item => item.productId == productId).quantity;
+        return state.items.find(item => item.productId === productId)?.quantity || 0;
+    };
+    const getTotalItemAmmount = () => {
+        return state.items.reduce((accum, item) => accum + item.quantity, 0);
     }
 
     return (
@@ -76,7 +78,8 @@ export const CartProvider = ({ children }) => {
             addItem,
             removeItem,
             clearCart,
-            getItemAmmount
+            getItemAmmount,
+            getTotalItemAmmount
         }}>
             {children}
         </CartContext.Provider>
