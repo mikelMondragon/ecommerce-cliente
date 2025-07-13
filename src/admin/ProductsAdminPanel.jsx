@@ -17,7 +17,7 @@ const ProductsAdminPanel = () => {
     return (
         <div>
             <h1>Porducts admin panel</h1>
-            <button onClick={() => naviate("/admin/createProduct")}>Create new product</button>
+            <button onClick={() => naviate("/admin-dashboard/create-product")}>Create new product</button>
             <ProductFilter onChange={(queryString) => setQuery(queryString)} />
             <ProductCardContainer
                 Card={ProductCard}

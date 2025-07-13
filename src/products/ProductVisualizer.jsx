@@ -2,10 +2,14 @@ import React, { useState } from 'react'
 import { ImageVisualizer } from './components/ImageVisualizer'
 import { ConfiguratorVisualizer } from './components/ConfiguratorVisualizer';
 import { QuantitySelector } from './components/QuantitySelector';
+import { useCart } from '../cart/context/CartContext';
+import { useNavigate } from 'react-router-dom';
 
 
 const ProductVisualizer = ({ product }) => {
     const urlBase = import.meta.env.VITE_SERVER_URL_BASE;
+    const { addItem } = useCart();
+    const navigate = useNavigate();
     const [ammount, setAmmount] = useState(1);
     const slots = product?.models?.map((element) => ({
         slot: element.slot,
@@ -20,10 +24,11 @@ const ProductVisualizer = ({ product }) => {
     }
 
     const onAddToCart = () => {
-
+        addItem(product._id, ammount, product);
     }
     const onBuyNow = () => {
-
+        addItem(product._id, ammount, product);
+        navigate("/checkout")
     }
 
     return (
@@ -37,7 +42,7 @@ const ProductVisualizer = ({ product }) => {
             {slots.length > 0 && <ConfiguratorVisualizer slots={slots} />}
             <QuantitySelector value={ammount} onChange={onAmmountChange} max={product.stock} />
             <button onClick={onAddToCart}>add to cart</button>
-            <button onClick={onBuyNow}>buy now</button>
+            <button onClick={onBuyNow}>Checkout</button>
         </article>
     )
 }

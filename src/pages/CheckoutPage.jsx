@@ -15,9 +15,7 @@ export const CheckoutPage = () => {
 
     async function handleCheckout() {
         try {
-
             const data = await apiFetch('http://localhost:5000/api/v1/orders/createCheckoutSession', "POST", {}, products)
-
             if (data.url) {
                 window.location.href = data.url; // Redirige a Stripe
             } else {
@@ -36,6 +34,7 @@ export const CheckoutPage = () => {
             {cart?.length > 0 ? (
                 <>
                     <ProductCardContainer Card={CartProductCard} products={products} />
+                    {/* aqui va la localizacion, un compoente pa esto? posiblemente */}
                     <button onClick={handleCheckout}>Checkout</button>
                 </>
             ) : (
