@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { auth } from '../../config/firebase.config';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+    createUserWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+} from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { apiFetch } from '../../utils/apiFetch';
@@ -23,12 +27,29 @@ function Register() {
             const user = userCredential.user;
             const idToken = await user.getIdToken();
 
-            const data = await apiFetch(`${urlBase}/auth/register`, "POST", {}, { idToken, userName });
+            await apiFetch(`${urlBase}/auth/register`, 'POST', {}, { idToken, userName });
 
-            toast.done("User registered");
-            navigate("/");
+            toast.success('User registered');
+            navigate('/');
         } catch (error) {
-            toast.error("Error in register: " + error.message);
+            toast.error('Error in register: ' + error.message);
+        }
+    };
+
+    const handleGoogleRegister = async () => {
+        try {
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            const idToken = await user.getIdToken();
+            const userName = user.displayName || 'Unnamed';
+
+            await apiFetch(`${urlBase}/auth/register`, 'POST', {}, { idToken, userName });
+
+            toast.success('Registered with Google');
+            navigate('/');
+        } catch (error) {
+            toast.error('Google Register Failed: ' + error.message);
         }
     };
 
@@ -76,6 +97,15 @@ function Register() {
                         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg transition-colors"
                     >
                         Register
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={handleGoogleRegister}
+                        className="mt-4 w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2"
+                    >
+                        <img src="/assets/images/auth/web_neutral_rd_na.svg" alt="Google icon" className="w-5 h-5" />
+                        Register with Google
                     </button>
                 </form>
 

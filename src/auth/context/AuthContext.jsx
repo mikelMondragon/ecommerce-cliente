@@ -40,7 +40,7 @@ export function AuthProvider({ children }) {
     );
 }
 
-// Se recomienda crear un hook
+
 export function useAuth() {
     return useContext(AuthContext);
 }

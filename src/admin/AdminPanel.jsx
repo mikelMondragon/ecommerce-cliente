@@ -6,7 +6,7 @@ function AdminPanel() {
 
     return (
         <div>
-            <h2>Panel de Administración</h2>
+            <h2>Admin dashboard</h2>
             <button onClick={() => navigate("/admin-dashboard/products")}>Products</button>
             <button onClick={() => navigate("/admin-dashboard/users")}>Users</button>
             <Outlet />

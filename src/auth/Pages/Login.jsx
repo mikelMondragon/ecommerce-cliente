@@ -4,6 +4,8 @@ import { auth } from '../../config/firebase.config';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { apiFetch } from '../../utils/apiFetch';
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
 
 export const Login = () => {
     const urlBase = import.meta.env.VITE_SERVER_URL_BASE;
@@ -25,6 +27,25 @@ export const Login = () => {
             toast.error("Login error: " + error.message);
         }
     };
+
+    const handleGoogleLogin = async () => {
+        try {
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            const idToken = await user.getIdToken();
+
+            const data = await apiFetch(`${urlBase}/auth/login`, "POST", {}, { idToken });
+            console.log("Google login success", data);
+
+            toast.success("Signed in with Google");
+            navigate("/");
+        } catch (error) {
+            toast.error("Google login failed: " + error.message);
+            console.error("Google login error:", error);
+        }
+    };
+
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -68,6 +89,15 @@ export const Login = () => {
                     >
                         Sign In
                     </button>
+                    <button
+                        type="button"
+                        onClick={handleGoogleLogin}
+                        className="mt-4 w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2"
+                    >
+                        <img src="/assets\images\auth\web_neutral_rd_na.svg" alt="Google icon" className="w-5 h-5" />
+                        Sign in with Google
+                    </button>
+
                 </form>
 
                 <div className="mt-6 text-center text-sm text-gray-600">

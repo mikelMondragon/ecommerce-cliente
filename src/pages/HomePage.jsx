@@ -10,14 +10,14 @@ import { CategoriesBanners } from '../shared/CategoriesBanners';
 
 export const HomePage = () => {
 
-    const [query, setQuery] = useState('');
+    // const [query, setQuery] = useState('');
     const urlBase = import.meta.env.VITE_SERVER_URL_BASE;
-    const fullUrl = `${urlBase}/api/v1/products${query}`;
+    const fullUrl = `${urlBase}/api/v1/products`;
     const { data, loading, error, setData } = useFetch(fullUrl);
 
     return (
         <div>
-            <ProductFilter queryMinPrice={data?.priceRange?.min} queryMaxPrice={data?.priceRange?.max} onChange={(queryString) => setQuery(queryString)} />
+            {/* <ProductFilter queryMinPrice={data?.priceRange?.min} queryMaxPrice={data?.priceRange?.max} onChange={(queryString) => setQuery(queryString)} /> */}
             <Hero />
             <ProductCardContainer
                 Card={CatalogProductCard}

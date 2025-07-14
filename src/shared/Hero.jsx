@@ -11,11 +11,11 @@ export const Hero = () => {
                             {/* Slider 1 */}
                             <div
                                 className="rounded-xl bg-cover bg-center p-8 text-white h-[400px] flex flex-col justify-center"
-                                style={{ backgroundImage: "url(/assets/images/hero/slider-bg1.jpg)" }}
+                                style={{ backgroundImage: "url(/assets/images/hero/warhammer40k-1.jpg)" }}
                             >
                                 <h2 className="text-2xl md:text-4xl font-bold">
-                                    <span className="block text-yellow-400 text-base">No restocking fee ($35 savings)</span>
-                                    M75 Sport Watch
+                                    <span className="block text-yellow-400 text-base">No restocking fee (35€ savings)</span>
+                                    Warhammer 40k plague
                                 </h2>
                                 <p className="my-4 max-w-md">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -31,11 +31,11 @@ export const Hero = () => {
                             {/* Slider 2 */}
                             <div
                                 className="rounded-xl bg-cover bg-center p-8 text-white h-[400px] flex flex-col justify-center"
-                                style={{ backgroundImage: "url(/assets/images/hero/slider-bg2.jpg)" }}
+                                style={{ backgroundImage: "url(/assets/images/hero/warhammer40k-2.jpg)" }}
                             >
                                 <h2 className="text-2xl md:text-4xl font-bold">
                                     <span className="block text-yellow-400 text-base">Big Sale Offer</span>
-                                    Get the Best Deal on CCTV Camera
+                                    Get the Best Deal on W40K Death watch
                                 </h2>
                                 <p className="my-4 max-w-md">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -55,11 +55,11 @@ export const Hero = () => {
                         {/* Banner 1 */}
                         <div
                             className="hero-small-banner rounded-xl bg-cover bg-center p-6 text-white h-[190px] flex flex-col justify-center"
-                            style={{ backgroundImage: "url(/assets/images/hero/slider-bnr.jpg)" }}
+                            style={{ backgroundImage: "url(/assets/images/hero/warhammer40k-3.jpg)" }}
                         >
                             <h2 className="text-xl md:text-2xl font-bold">
                                 <span className="block text-yellow-300 text-base">New line required</span>
-                                iPhone 12 Pro Max
+                                W40K Orcs
                             </h2>
                             <h3 className="text-lg mt-2">$259.99</h3>
                         </div>

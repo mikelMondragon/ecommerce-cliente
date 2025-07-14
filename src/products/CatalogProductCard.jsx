@@ -19,14 +19,14 @@ export const CatalogProductCard = ({ product }) => {
     return (
         <article
             onClick={handleCardClick}
-            className="bg-white rounded-md overflow-hidden shadow hover:shadow-lg transition cursor-pointer max-w-xs"
+            className="bg-white rounded-md overflow-hidden shadow hover:shadow-lg transition cursor-pointer w-full h-[460px] flex flex-col"
         >
-            {/* Image + Add to Cart button overlay */}
-            <div className="relative group">
+            {/* Image + Add to Cart overlay */}
+            <div className="relative group h-48 flex-shrink-0">
                 <img
                     src={`${import.meta.env.VITE_SERVER_URL_BASE}/${imageUrl}`}
                     alt={product.name}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
                     <button
@@ -39,13 +39,14 @@ export const CatalogProductCard = ({ product }) => {
             </div>
 
             {/* Info section */}
-            <div className="p-4 text-center">
-                <span className="text-xs text-gray-500">{product.category || "Category"}</span>
-                <h4 className="text-md font-semibold text-gray-800 mt-1 hover:text-blue-600">
-                    {product.name}
-                </h4>
+            <div className="flex-grow p-4 text-center flex flex-col justify-between">
+                <div>
+                    <span className="text-xs text-gray-500">{product.category || "Category"}</span>
+                    <h4 className="text-md font-semibold text-gray-800 mt-1 hover:text-blue-600 break-words line-clamp-2">
+                        {product.name}
+                    </h4>
+                </div>
 
-                {/* Review stars */}
                 <ul className="flex justify-center items-center text-yellow-400 text-sm mt-2 gap-0.5">
                     {Array.from({ length: 5 }).map((_, i) => (
                         <li key={i}>
@@ -53,15 +54,19 @@ export const CatalogProductCard = ({ product }) => {
                         </li>
                     ))}
                     <li>
-                        <span className="text-xs text-gray-500 ml-2">{product.rating?.toFixed(1) || "0.0"} Review(s)</span>
+                        <span className="text-xs text-gray-500 ml-2">
+                            {product.rating?.toFixed(1) || "0.0"} Review(s)
+                        </span>
                     </li>
                 </ul>
 
-                {/* Price */}
                 <div className="price mt-2">
-                    <span className="text-lg font-bold text-gray-900">€{product.price.toFixed(2)}</span>
+                    <span className="text-lg font-bold text-gray-900">
+                        €{product.price.toFixed(2)}
+                    </span>
                 </div>
             </div>
         </article>
+
     );
 };

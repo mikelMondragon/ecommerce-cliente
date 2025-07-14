@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-export const SearchFilter = ({ onSearch }) => {
-    const [search, setSearch] = useState('');
+export const SearchFilter = ({ onSearch, initialValue = "" }) => {
+    const [search, setSearch] = useState(initialValue);
 
     const handleSearch = () => {
         onSearch(search);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-export const CategoryFilter = ({ onCategorySelect }) => {
-    const [selected, setSelected] = useState(null);
+export const CategoryFilter = ({ onCategorySelect, selectedCategory }) => {
+    const [selected, setSelected] = useState(selectedCategory);
     const categories = ['Tools', 'Miniatures', 'Paints'];
 
     const handleClick = (category) => {
@@ -14,6 +14,7 @@ export const CategoryFilter = ({ onCategorySelect }) => {
         }
     };
 
+
     return (
         <div className="flex flex-wrap gap-2">
             {categories.map((cat) => (
@@ -21,8 +22,8 @@ export const CategoryFilter = ({ onCategorySelect }) => {
                     key={cat}
                     onClick={() => handleClick(cat)}
                     className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 ${selected === cat
-                            ? 'bg-blue-600 text-white border-blue-600'
-                            : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-100'
+                        ? 'bg-blue-600 text-white border-blue-600'
+                        : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-100'
                         }`}
                 >
                     {cat}

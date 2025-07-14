@@ -6,12 +6,13 @@ import { ToastContainer } from 'react-toastify';
 
 import MainLayout from './shared/MainLayout'
 import { HomePage } from './pages/HomePage'
-import ProductPage from './pages/ProductPage'
+import ProductDetailsPage from './pages/ProductDetailsPage'
 import { CheckoutPage } from './pages/CheckoutPage'
 import { CheckoutSuccess } from './pages/CheckoutSuccess'
 import { CheckoutError } from './pages/CheckoutError'
 
-import { adminRoutes, authRoutes } from './routes'
+import { adminRoutes, authRoutes, userRoutes } from './routes'
+import { ProductsPage } from './pages/ProductsPage';
 
 
 
@@ -32,10 +33,14 @@ function App() {
       <Routes>
         <Route element={<MainLayout />} >
           {renderRoutes(adminRoutes)}
-          <Route path='product/:id' element={<ProductPage />} />
+          {renderRoutes(userRoutes)}
+          <Route path='product/:id' element={<ProductDetailsPage />} />
+          <Route path='/products' element={<ProductsPage />} />
+          {/* Mover a checkout */}
           <Route path='/checkout' element={<CheckoutPage />} />
           <Route path='/success' element={<CheckoutSuccess />} />
           <Route path='/cancel' element={<CheckoutError />} />
+
           <Route path='/' element={<HomePage />} />
           <Route path='*' element={<Navigate to='/' />} />
         </Route>

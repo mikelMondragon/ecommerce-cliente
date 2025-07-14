@@ -3,9 +3,16 @@ import { SearchFilter } from './SearchFilter';
 import CategoryFilter from './CategoryFilter';
 import AvailableFilter from './AvailableFilter';
 import { PriceFilter } from './PriceFilter';
+import { useSearchParams } from 'react-router-dom';
 
 const ProductFilter = ({ onChange, queryMinPrice, queryMaxPrice }) => {
+    const [searchParams] = useSearchParams();
+
+    const initialName = searchParams.get("name") || "";
+    const initialCategory = searchParams.get("category") || "";
     const [filters, setFilters] = useState({
+        name: initialName,
+        category: initialCategory,
         inStock: 'true',
         minPrice: queryMinPrice,
         maxPrice: queryMaxPrice
@@ -62,7 +69,7 @@ const ProductFilter = ({ onChange, queryMinPrice, queryMaxPrice }) => {
             <div className="p-6 bg-white/5 rounded-2xl shadow-lg backdrop-blur-sm border border-white/10 space-y-6 w-full max-w-md text-center">
                 <h2 className="text-xl font-bold text-white tracking-wide">Filters</h2>
 
-                <SearchFilter onSearch={handleSearch} />
+                <SearchFilter onSearch={handleSearch} initialValue={initialName} />
                 <AvailableFilter onChange={handleAvailableChange} defaultChecked />
                 <PriceFilter min={queryMinPrice} max={queryMaxPrice} onChange={handlePriceChange} />
                 <CategoryFilter onCategorySelect={handleCategoryClick} selectedCategory={filters.category} />

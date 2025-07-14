@@ -5,12 +5,11 @@ import { useCart } from './context/CartContext'
 export const CartProductCard = ({ product }) => {
     const imageUrl = product?.images?.[0]
     const { addItem, removeItem, getItemAmmount } = useCart()
-    const [ammount, setAmmount] = useState(getItemAmmount(product._id))
+    const ammount = getItemAmmount(product._id)
 
     const onAmmountChange = (newAmmount) => {
         if (newAmmount > 0) {
             const dif = newAmmount - ammount
-            setAmmount(newAmmount)
             addItem(product._id, dif, product)
         } else {
             removeItem(product._id)
