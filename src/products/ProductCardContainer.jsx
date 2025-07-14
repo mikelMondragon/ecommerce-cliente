@@ -28,17 +28,24 @@ export const ProductCardContainer = ({ Card, products = [], loading, error, setP
     return error ? (
         <p>Error: {error}</p>
     ) : (
-        <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 bg-gray-50 min-h-screen">
+        <section
+            className={`${origin === "cart"
+                ? "flex flex-col space-y-2 p-2 max-h-96 overflow-y-auto w-full"
+                : "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 bg-gray-50 min-h-screen"
+                }`}
+
+        >
             {products.map(product => (
                 <Card
                     key={`${origin}-${product._id}`}
                     product={product}
-                    onCart={() => { }} // implement later if needed
+                    onCart={() => { }}
                     onDelete={handleDelete}
                     onClick={handleCardClick}
                 />
             ))}
         </section>
+
     );
 };
 

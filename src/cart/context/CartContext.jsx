@@ -38,7 +38,7 @@ const cartReducer = (state, action) => {
             };
 
         case 'CLEAR_CART':
-            return initialState();
+            return { items: [] };
 
         default:
             return state;
@@ -65,12 +65,21 @@ export const CartProvider = ({ children }) => {
         dispatch({ type: 'CLEAR_CART' });
     };
 
+    const getItemAmmount = (productId) => {
+        return state.items.find(item => item.productId === productId)?.quantity || 0;
+    };
+    const getTotalItemAmmount = () => {
+        return state.items.reduce((accum, item) => accum + item.quantity, 0);
+    }
+
     return (
         <CartContext.Provider value={{
             cart: state.items,
             addItem,
             removeItem,
-            clearCart
+            clearCart,
+            getItemAmmount,
+            getTotalItemAmmount
         }}>
             {children}
         </CartContext.Provider>

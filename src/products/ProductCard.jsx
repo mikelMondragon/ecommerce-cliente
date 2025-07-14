@@ -6,8 +6,8 @@ export const ProductCard = ({ product, onDelete }) => {
     const navigate = useNavigate();
 
     const handleCardClick = () => {
-        navigate(`/product/${product._id}`);
-        console.log("ID: ", id)
+        console.log("ID: ", product._id)
+        navigate(`/admin-dashboard/edit-product/${product._id}`);
     }
 
     return (

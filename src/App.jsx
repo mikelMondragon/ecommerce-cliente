@@ -1,22 +1,30 @@
 import { useState } from 'react'
 import './App.css'
-import { Route, Routes, Navigate } from 'react-router-dom'
-import { ProductCardContainer } from './products/ProductCardContainer'
-import { CreateProduct } from './products/CreateProduct'
-import { EditProduct } from './products/EditProduct'
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Register from './auth/Pages/Register'
+import { Route, Routes, Navigate } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify';
+
 import MainLayout from './shared/MainLayout'
-import { Login } from './auth/Pages/Login'
-import AdminPanel from './admin/AdminPanel'
-import ProductsAdminPanel from './admin/ProductsAdminPanel'
-import UsersAdminPanel from './admin/UsersAdminPanel'
 import { HomePage } from './pages/HomePage'
-import ProductPage from './pages/ProductPage'
+import ProductDetailsPage from './pages/ProductDetailsPage'
+import { CheckoutPage } from './pages/CheckoutPage'
+import { CheckoutSuccess } from './pages/CheckoutSuccess'
+import { CheckoutError } from './pages/CheckoutError'
+
+import { adminRoutes, authRoutes, userRoutes } from './routes'
+import { ProductsPage } from './pages/ProductsPage';
+
+
 
 function App() {
-  //aqui deberia de tener un estado?
+
+  const renderRoutes = (routes) =>
+    routes.map(({ path, element, children }) => (
+      <Route key={path} path={path} element={element}>
+        {children && renderRoutes(children)}
+      </Route>
+    ));
+
 
 
   return (
@@ -24,17 +32,22 @@ function App() {
 
       <Routes>
         <Route element={<MainLayout />} >
-          <Route path='/admin-dashboard' element={<AdminPanel />} />
-          <Route path='/admin/products' element={<ProductsAdminPanel />} />
-          <Route path='/admin/createProduct' element={<CreateProduct />} />
-          <Route path='product/:id' element={<EditProduct />} />
-          <Route path='/admin/users' element={<UsersAdminPanel />} />
+          {renderRoutes(adminRoutes)}
+          {renderRoutes(userRoutes)}
+          <Route path='product/:id' element={<ProductDetailsPage />} />
+          <Route path='/products' element={<ProductsPage />} />
+          {/* Mover a checkout */}
+          <Route path='/checkout' element={<CheckoutPage />} />
+          <Route path='/success' element={<CheckoutSuccess />} />
+          <Route path='/cancel' element={<CheckoutError />} />
+
           <Route path='/' element={<HomePage />} />
-          <Route path='/:id' element={<ProductPage />} />
           <Route path='*' element={<Navigate to='/' />} />
         </Route>
+        {renderRoutes(authRoutes)}
+        {/* authRoutes
         <Route path='register' element={<Register />} />
-        <Route path='login' element={<Login />} />
+        <Route path='login' element={<Login />} /> */}
       </Routes>
       <ToastContainer
         position="top-right"
